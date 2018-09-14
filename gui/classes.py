@@ -138,10 +138,11 @@ class WhiteCircle:
 # Corners classes
 
 class CornerLeft:
-    def __init__(self, parent, x, y ):
+    def __init__(self, parent, x, y ,tags):
         self.parent = parent  # canvas
         self.x = x  # top left x
         self.y = y  # top left y
+        self.tags = tags
         self.initUI()
 
     def initUI(self):
@@ -155,14 +156,15 @@ class CornerLeft:
               ( x+50 - cos_tr- cos_tr- cos_tr -cos_tr, y + 11 + sin_tr - sin_tr + sin_tr + 22 + sin_tr), #x6
               (x + 50 - cos_tr - cos_tr - cos_tr - cos_tr- cos_tr/2, y + 11 + sin_tr - sin_tr + sin_tr + 22 + sin_tr - sin_tr/2), #x7
               (x + 50 - cos_tr - cos_tr - cos_tr - cos_tr- cos_tr/2 + sin(30 * pi / 180) * 55, y + 11 + sin_tr - sin_tr + sin_tr + 22 + sin_tr - sin_tr / 2- cos(30 * pi / 180) * 55)] #x8
-        self.parent.create_polygon(xy,  fill="#fff", outline="#ffffff")
+        self.parent.create_polygon(xy,  fill="#fff", outline="#ffffff", tags = self.tags)
 
 
 
 class CornerRight:
-    def __init__(self, parent, x, y ):
+    def __init__(self, parent, x, y ,tags):
         self.parent = parent  # canvas
         self.x = x  # top left x
+        self.tags = tags
         self.y = y  # top left y
         self.initUI()
 
@@ -177,13 +179,14 @@ class CornerRight:
               (x + cos_tr+ cos_tr+ cos_tr +cos_tr, y + 11 + sin_tr - sin_tr + sin_tr + 22 + sin_tr), #x7
               (x + cos_tr + cos_tr + cos_tr + cos_tr+ cos_tr/2, y + 11 + sin_tr - sin_tr + sin_tr + 22 + sin_tr - sin_tr/2), #x8
               (x + cos_tr + cos_tr + cos_tr + cos_tr+ cos_tr/2 -sin(30 * pi / 180) * 55, y + 11 + sin_tr - sin_tr + sin_tr + 22 + sin_tr - sin_tr / 2- cos(30 * pi / 180) * 55)] #x9
-        self.parent.create_polygon(xy,  fill="#fff", outline="#ffffff")
+        self.parent.create_polygon(xy,  fill="#fff", outline="#ffffff", tags = self.tags)
 
 
 class CornerRightMiddle:
-    def __init__(self, parent, x, y ):
+    def __init__(self, parent, x, y ,tags):
         self.parent = parent  # canvas
         self.x = x  # top left x
+        self.tags = tags
         self.y = y  # top left y
         self.initUI()
 
@@ -198,13 +201,14 @@ class CornerRightMiddle:
               (x + cos_tr- cos_tr +cos_tr/2, y + 22 + sin_tr +22 + sin_tr + 22 + sin_tr/2), #x7
               (x + cos_tr- cos_tr +cos_tr + sin(20 * pi / 180) * 55, y + 22 + sin_tr +22 + sin_tr + 22 + sin_tr-cos(20 * pi / 180) * 55)] #x8
               #(x + cos_tr + cos_tr + cos_tr + cos_tr+ cos_tr/2 -sin(30 * pi / 180) * 55, y + 11 + sin_tr - sin_tr + sin_tr + 22 + sin_tr - sin_tr / 2- cos(30 * pi / 180) * 55)] #x9
-        self.parent.create_polygon(xy,  fill="#fff", outline="#ffffff")
+        self.parent.create_polygon(xy,  fill="#fff", outline="#ffffff", tags = self.tags)
 
 class CornerLeftMiddle:
-    def __init__(self, parent, x, y ):
+    def __init__(self, parent, x, y ,tags):
         self.parent = parent  # canvas
         self.x = x  # top left x
         self.y = y  # top left y
+        self.tags =tags
         self.initUI()
 
     def initUI(self):
@@ -218,13 +222,14 @@ class CornerLeftMiddle:
               (x + cos_tr- cos_tr -cos_tr/2, y + 22 + sin_tr +22 + sin_tr + 22 + sin_tr/2), #x7
               (x + cos_tr- cos_tr -cos_tr - sin(20 * pi / 180) * 55, y + 22 + sin_tr +22 + sin_tr + 22 + sin_tr-cos(20 * pi / 180) * 55)] #x8
               #(x + cos_tr + cos_tr + cos_tr + cos_tr+ cos_tr/2 -sin(30 * pi / 180) * 55, y + 11 + sin_tr - sin_tr + sin_tr + 22 + sin_tr - sin_tr / 2- cos(30 * pi / 180) * 55)] #x9
-        self.parent.create_polygon(xy,  fill="#fff", outline="#ffffff")
+        self.parent.create_polygon(xy,  fill="#fff", outline="#ffffff", tags = self.tags)
 
 class CornerLeftBottom:
-    def __init__(self, parent, x, y ):
+    def __init__(self, parent, x, y ,tags):
         self.parent = parent  # canvas
         self.x = x  # top left x
         self.y = y  # top left y
+        self.tags = tags
         self.initUI()
 
     def initUI(self):
@@ -238,13 +243,14 @@ class CornerLeftBottom:
               (x + 4*cos_tr, y+33 + 2*sin_tr), #x7
               (x + 4*cos_tr -55, y+33 + 2*sin_tr)] #x8
               #(x + cos_tr + cos_tr + cos_tr + cos_tr+ cos_tr/2 -sin(30 * pi / 180) * 55, y + 11 + sin_tr - sin_tr + sin_tr + 22 + sin_tr - sin_tr / 2- cos(30 * pi / 180) * 55)] #x9
-        self.parent.create_polygon(xy,  fill="#fff", outline="#ffffff")
+        self.parent.create_polygon(xy,  fill="#fff", outline="#ffffff", tags = self.tags)
 
 class CornerRightBottom:
-    def __init__(self, parent, x, y ):
+    def __init__(self, parent, x, y, tags ):
         self.parent = parent  # canvas
         self.x = x  # top left x
         self.y = y  # top left y
+        self.tags = tags
         self.initUI()
 
     def initUI(self):
@@ -258,4 +264,4 @@ class CornerRightBottom:
               (x - 4*cos_tr, y+33 + 2*sin_tr), #x7
               (x - 4*cos_tr +55, y+33 + 2*sin_tr)] #x8
               #(x + cos_tr + cos_tr + cos_tr + cos_tr+ cos_tr/2 -sin(30 * pi / 180) * 55, y + 11 + sin_tr - sin_tr + sin_tr + 22 + sin_tr - sin_tr / 2- cos(30 * pi / 180) * 55)] #x9
-        self.parent.create_polygon(xy,  fill="#fff", outline="#ffffff")
+        self.parent.create_polygon(xy,  fill="#fff", outline="#ffffff", tags = self.tags)
