@@ -13,6 +13,9 @@ class App(Tk):
     def click(self, evt):
         size = 22
         x, y = evt.x, evt.y
+        item = self.can.find_closest(x, y)[0]
+        tags = self.can.gettags(item)
+        print tags
         # print("x: ", x, "y: ", y)
         for i in self.hexagons:
              if ((x < i.y+size and i.y-size/3<x )and (y<i.x+size and i.x-(size/2)<y)):
@@ -52,7 +55,7 @@ class App(Tk):
                     coords = "{}".format(len(self.hexagons) - 1)
                     self.can.create_text((ro * (size * sqrt(3))) +120 + offset,
                                          col * (size * 1.5) + 8.05 * (size * sqrt(3) / 2) +145 +10,
-                                         text=coords, tags=coords)
+                                         text=coords)
         #2h sthlh
         for col in range(7):
             if col % 2 == 0:
@@ -71,7 +74,7 @@ class App(Tk):
                 coords = "{}".format(len(self.hexagons) - 1)
                 self.can.create_text((ro * (size * sqrt(3))) + offset + 120,
                                      col * (size * 1.5) + 4.55 * (size * sqrt(3) / 2) + 146+10,
-                                     text=coords, tags=coords)
+                                     text=coords)
         #3h grammh
         for col in range(11):
                 if col % 2 == 0:
@@ -90,7 +93,7 @@ class App(Tk):
                     coords = "{}".format( len(self.hexagons) - 1)
                     self.can.create_text((ro * (size * sqrt(3))) + offset+120,
                                          col * (size * 1.5) + 4.55 * (size * sqrt(3) / 2)+81+10,
-                                         text=coords, tags=coords)
+                                         text=coords)
 
 
         #4h sthlh
@@ -111,7 +114,7 @@ class App(Tk):
                 coords = "{}".format( len(self.hexagons) - 1)
                 self.can.create_text((ro * (size * sqrt(3))) + offset + 120,
                                      col * (size * 1.5) + 4.55 * (size * sqrt(3) / 2) + 15+ 10 ,
-                                     text=coords, tags=coords)
+                                     text=coords)
         #5h sthlh
         for col in range(19):
             if col % 2 == 0:
@@ -130,7 +133,7 @@ class App(Tk):
                 coords = "{}".format( len(self.hexagons) - 1)
                 self.can.create_text((ro * (size * sqrt(3))) + offset + 120,
                                      col * (size * 1.5) + 4.55 * (size * sqrt(3) / 2) -50 + 10,
-                                     text=coords, tags=coords)
+                                     text=coords)
 
         #6h sthlh
         for col in range(19):
@@ -150,7 +153,7 @@ class App(Tk):
                 coords = "{}".format(len(self.hexagons) - 1)
                 self.can.create_text((ro * (size * sqrt(3))) + offset+120,
                                      col * (size * 1.5) + 4.55 * (size * sqrt(3) / 2) - 50 +10,
-                                     text=coords, tags=coords)
+                                     text=coords)
 
         #7 ews 15 sthles
         for c in range(19):
@@ -170,7 +173,7 @@ class App(Tk):
                     coords = "{}".format(len(self.hexagons) - 1)
                     self.can.create_text((r * (size * sqrt(3))) + offset+120,
                                          c * (size * 1.5)+ 35 +10,
-                                         text=coords, tags=coords)
+                                         text=coords)
 
         #16h sthlh
         for c in range(17):
@@ -190,7 +193,7 @@ class App(Tk):
                     coords = "{}".format(len(self.hexagons) - 1)
                     self.can.create_text((r * (size * sqrt(3))) + offset+120,
                                          c * (size * 1.5)+ 68+10,
-                                         text=coords, tags=coords)
+                                         text=coords)
 
         #17h sthlh
         for ciol in range(13):
@@ -210,7 +213,7 @@ class App(Tk):
                     coords = "{}".format( len(self.hexagons) - 1)
                     self.can.create_text((ro * (size * sqrt(3))) + offset+120,
                                          ciol * (size * 1.5) + 2.8 * (size * sqrt(3) / 2) + 81+10,
-                                         text=coords, tags=coords)
+                                         text=coords)
         #18h sthlh
         for ciol in range(9):
                 if ciol % 2 != 0:
@@ -229,7 +232,7 @@ class App(Tk):
                     coords = "{}".format(len(self.hexagons) - 1)
                     self.can.create_text((ro * (size * sqrt(3))) + offset+120,
                                          ciol * (size * 1.5) + 2.8 * (size * sqrt(3) / 2) + 146+10,
-                                         text=coords, tags=coords)
+                                         text=coords)
         #19h sthlh
         for cil in range(5):
             if cil % 2 != 0:
@@ -248,7 +251,7 @@ class App(Tk):
                 coords = "{}".format( len(self.hexagons) - 1)
                 self.can.create_text((ro * (size * sqrt(3))) + offset+120,
                                      cil * (size * 1.5) + 6.3 * (size * sqrt(3) / 2) + 146+10,
-                                     text=coords, tags=coords)
+                                     text=coords)
          #20h sthlh
         for ci in range(1):
             if ci % 2 != 0:
@@ -267,7 +270,7 @@ class App(Tk):
                 coords = "{}".format(len(self.hexagons)-1)
                 self.can.create_text((ro * (size * sqrt(3))) + offset+120,
                                      ci * (size * 1.5) + 9.75 * (size * sqrt(3) / 2) + 146+10,
-                                     text=coords, tags=coords)
+                                     text=coords)
         size_of_game = "5x5"
         openP = []
         if (size_of_game == "5x5"):
