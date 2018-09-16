@@ -1,36 +1,39 @@
 from classes import *
 from math import *
+
+#The hexagons and the main board are created
+#it returns a list of hexagons with all the hexagons on the board
 def init_grid(canvas,cols, rows, size, debug):
     hexagons = []
-    # 1h sthlh
+    #first column with 0-2
     for col in range(3):
         if col % 2 == 0:
-            offset = size * sqrt(3) / 2  # edw afhnei to keno tou enos hexagonal -_-_-_-_-
+            offset = size * sqrt(3) / 2  #the offset of one hexagonal -_-_-_-_-
         else:
             offset = 0
         for ro in range(1):
-            h = FillHexagon(canvas,
-                            col * (size * 1.5) + 8.05 * (size * sqrt(3) / 2) + 145,
-                            (ro * (size * sqrt(3))) + offset + 100,  # (self, parent, x, y, length, color, tags):
-                            size,
-                            "#5FFF2D",
-                            "{}.{}".format("S", len(hexagons)))
+            h = Hexagon(canvas,
+                            col * (size * 1.5) + 8.05 * (size * sqrt(3) / 2) + 145, #x
+                            (ro * (size * sqrt(3))) + offset + 100,  #y
+                            size, #size is initialised in the main script
+                            "#5FFF2D", #colour
+                            "{}.{}".format("S", len(hexagons))) #tags
             hexagons.append(h)
-            if debug:
+            if debug:   #if debug if false then the ID of each hexagonal is not printed in the board
                 coords = "{}".format(len(hexagons) - 1)
                 canvas.create_text((ro * (size * sqrt(3))) + 120 + offset,
                                      col * (size * 1.5) + 8.05 * (size * sqrt(3) / 2) + 145 + 10,
                                      text=coords)
-    # 2h sthlh
+    #second column 3-9
     for col in range(7):
         if col % 2 == 0:
-            offset = size * sqrt(3) / 2  # edw afhnei to keno tou enos hexagonal -_-_-_-_-
+            offset = size * sqrt(3) / 2
         else:
             offset = 0
         for ro in range(1, 2, 1):
-            h = FillHexagon(canvas,
+            h = Hexagon(canvas,
                             col * (size * 1.5) + 4.55 * (size * sqrt(3) / 2) + 146,
-                            (ro * (size * sqrt(3))) + offset + 100,  # (self, parent, x, y, length, color, tags):
+                            (ro * (size * sqrt(3))) + offset + 100,
                             size,
                             "#5FFF2D",
                             "{}.{}".format("S", len(hexagons)))
@@ -40,16 +43,16 @@ def init_grid(canvas,cols, rows, size, debug):
             canvas.create_text((ro * (size * sqrt(3))) + offset + 120,
                                  col * (size * 1.5) + 4.55 * (size * sqrt(3) / 2) + 146 + 10,
                                  text=coords)
-    # 3h grammh
+    #third column 10-20
     for col in range(11):
         if col % 2 == 0:
-            offset = size * sqrt(3) / 2  # edw afhnei to keno tou enos hexagonal -_-_-_-_-
+            offset = size * sqrt(3) / 2
         else:
             offset = 0
         for ro in range(2, 3, 1):
-            h = FillHexagon(canvas,
+            h = Hexagon(canvas,
                             col * (size * 1.5) + 4.55 * (size * sqrt(3) / 2) + 81,
-                            (ro * (size * sqrt(3))) + offset + 100,  # (self, parent, x, y, length, color, tags):
+                            (ro * (size * sqrt(3))) + offset + 100,
                             size,
                             "#5FFF2D",
                             "{}.{}".format("S", len(hexagons)))
@@ -60,16 +63,16 @@ def init_grid(canvas,cols, rows, size, debug):
                                  col * (size * 1.5) + 4.55 * (size * sqrt(3) / 2) + 81 + 10,
                                  text=coords)
 
-    # 4h sthlh
+    #4th column 21-35
     for col in range(15):
         if col % 2 == 0:
-            offset = size * sqrt(3) / 2  # edw afhnei to keno tou enos hexagonal -_-_-_-_-
+            offset = size * sqrt(3) / 2
         else:
             offset = 0
         for ro in range(3, 4, 1):
-            h = FillHexagon(canvas,
+            h = Hexagon(canvas,
                             col * (size * 1.5) + 4.55 * (size * sqrt(3) / 2) + 14,
-                            (ro * (size * sqrt(3))) + offset + 100,  # (self, parent, x, y, length, color, tags):
+                            (ro * (size * sqrt(3))) + offset + 100,
                             size,
                             "#5FFF2D",
                             "{}.{}".format("S", len(hexagons)))
@@ -79,16 +82,16 @@ def init_grid(canvas,cols, rows, size, debug):
             canvas.create_text((ro * (size * sqrt(3))) + offset + 120,
                                  col * (size * 1.5) + 4.55 * (size * sqrt(3) / 2) + 15 + 10,
                                  text=coords)
-    # 5h sthlh
+    # 5th column 36-54
     for col in range(19):
         if col % 2 == 0:
-            offset = size * sqrt(3) / 2  # edw afhnei to keno tou enos hexagonal -_-_-_-_-
+            offset = size * sqrt(3) / 2
         else:
             offset = 0
         for ro in range(4, 5, 1):
-            h = FillHexagon(canvas,
+            h = Hexagon(canvas,
                             col * (size * 1.5) + 4.55 * (size * sqrt(3) / 2) - 52,
-                            (ro * (size * sqrt(3))) + offset + 100,  # (self, parent, x, y, length, color, tags):
+                            (ro * (size * sqrt(3))) + offset + 100,
                             size,
                             "#5FFF2D",
                             "{}.{}".format("S", len(hexagons)))
@@ -99,14 +102,14 @@ def init_grid(canvas,cols, rows, size, debug):
                                  col * (size * 1.5) + 4.55 * (size * sqrt(3) / 2) - 50 + 10,
                                  text=coords)
 
-    # 6h sthlh
+    # 6th column 55-73
     for col in range(19):
         if col % 2 == 0:
             offset = size * sqrt(3) / 2  # edw afhnei to keno tou enos hexagonal -_-_-_-_-
         else:
             offset = 0
         for ro in range(5, 6, 1):
-            h = FillHexagon(canvas,
+            h = Hexagon(canvas,
                             col * (size * 1.5) + 4.55 * (size * sqrt(3) / 2) - 52,
                             (ro * (size * sqrt(3))) + offset + 100,  # (self, parent, x, y, length, color, tags):
                             size,
@@ -119,14 +122,14 @@ def init_grid(canvas,cols, rows, size, debug):
                                  col * (size * 1.5) + 4.55 * (size * sqrt(3) / 2) - 50 + 10,
                                  text=coords)
 
-    # 7 ews 15 sthles
+    # 7th - 15th columns 74-225
     for c in range(19):
         if c % 2 == 0:
-            offset = size * sqrt(3) / 2  # edw afhnei to keno tou enos hexagonal -_-_-_-_-
+            offset = size * sqrt(3) / 2
         else:
             offset = 0
         for r in range(6, rows, 1):
-            h = FillHexagon(canvas,
+            h = Hexagon(canvas,
                             c * (size * 1.5) + 35,
                             (r * (size * sqrt(3))) + offset + 100,
                             size,
@@ -139,14 +142,14 @@ def init_grid(canvas,cols, rows, size, debug):
                                      c * (size * 1.5) + 35 + 10,
                                      text=coords)
 
-    # 16h sthlh
+    # 16th column 226-242
     for c in range(17):
         if c % 2 != 0:
-            offset = size * sqrt(3) / 2  # edw afhnei to keno tou enos hexagonal -_-_-_-_-
+            offset = size * sqrt(3) / 2
         else:
             offset = 0
         for r in range(rows, rows + 1, 1):
-            h = FillHexagon(canvas,
+            h = Hexagon(canvas,
                             c * (size * 1.5) + 68,
                             (r * (size * sqrt(3))) + offset + 100,
                             size,
@@ -159,16 +162,16 @@ def init_grid(canvas,cols, rows, size, debug):
                                      c * (size * 1.5) + 68 + 10,
                                      text=coords)
 
-    # 17h sthlh
+    # 17th column 243-255
     for ciol in range(13):
         if ciol % 2 != 0:
-            offset = size * sqrt(3) / 2  # edw afhnei to keno tou enos hexagonal -_-_-_-_-
+            offset = size * sqrt(3) / 2
         else:
             offset = 0
         for ro in range(rows + 1, rows + 2, 1):
-            h = FillHexagon(canvas,
+            h = Hexagon(canvas,
                             ciol * (size * 1.5) + 2.8 * (size * sqrt(3) / 2) + 81,
-                            (ro * (size * sqrt(3))) + offset + 100,  # (self, parent, x, y, length, color, tags):
+                            (ro * (size * sqrt(3))) + offset + 100,
                             size,
                             "#5FFF2D",
                             "{}.{}".format("S", len(hexagons)))
@@ -178,16 +181,16 @@ def init_grid(canvas,cols, rows, size, debug):
             canvas.create_text((ro * (size * sqrt(3))) + offset + 120,
                                  ciol * (size * 1.5) + 2.8 * (size * sqrt(3) / 2) + 81 + 10,
                                  text=coords)
-    # 18h sthlh
+    # 18th column 256-264
     for ciol in range(9):
         if ciol % 2 != 0:
-            offset = size * sqrt(3) / 2  # edw afhnei to keno tou enos hexagonal -_-_-_-_-
+            offset = size * sqrt(3) / 2
         else:
             offset = 0
         for ro in range(rows + 2, rows + 3, 1):
-            h = FillHexagon(canvas,
+            h = Hexagon(canvas,
                             ciol * (size * 1.5) + 2.8 * (size * sqrt(3) / 2) + 146,
-                            (ro * (size * sqrt(3))) + offset + 100,  # (self, parent, x, y, length, color, tags):
+                            (ro * (size * sqrt(3))) + offset + 100,
                             size,
                             "#5FFF2D",
                             "{}.{}".format("S", len(hexagons)))
@@ -197,16 +200,16 @@ def init_grid(canvas,cols, rows, size, debug):
             canvas.create_text((ro * (size * sqrt(3))) + offset + 120,
                                  ciol * (size * 1.5) + 2.8 * (size * sqrt(3) / 2) + 146 + 10,
                                  text=coords)
-    # 19h sthlh
+    # 19th column 265-269
     for cil in range(5):
         if cil % 2 != 0:
-            offset = size * sqrt(3) / 2  # edw afhnei to keno tou enos hexagonal -_-_-_-_-
+            offset = size * sqrt(3) / 2
         else:
             offset = 0
         for ro in range(rows + 3, rows + 4, 1):
-            h = FillHexagon(canvas,
+            h = Hexagon(canvas,
                             cil * (size * 1.5) + 6.3 * (size * sqrt(3) / 2) + 146,
-                            (ro * (size * sqrt(3))) + offset + 100,  # (self, parent, x, y, length, color, tags):
+                            (ro * (size * sqrt(3))) + offset + 100,
                             size,
                             "#5FFF2D",
                             "{}.{}".format("S", len(hexagons)))
@@ -216,16 +219,16 @@ def init_grid(canvas,cols, rows, size, debug):
             canvas.create_text((ro * (size * sqrt(3))) + offset + 120,
                                  cil * (size * 1.5) + 6.3 * (size * sqrt(3) / 2) + 146 + 10,
                                  text=coords)
-    # 20h sthlh
+    # 20th column 270
     for ci in range(1):
         if ci % 2 != 0:
-            offset = size * sqrt(3) / 2  # edw afhnei to keno tou enos hexagonal -_-_-_-_-
+            offset = size * sqrt(3) / 2
         else:
             offset = 0
         for ro in range(rows + 4, rows + 5, 1):
-            h = FillHexagon(canvas,
+            h = Hexagon(canvas,
                             ci * (size * 1.5) + 9.75 * (size * sqrt(3) / 2) + 146,
-                            (ro * (size * sqrt(3))) + offset + 100,  # (self, parent, x, y, length, color, tags):
+                            (ro * (size * sqrt(3))) + offset + 100,
                             size,
                             "#5FFF2D",
                             "{}.{}".format("S", len(hexagons)))
@@ -238,7 +241,8 @@ def init_grid(canvas,cols, rows, size, debug):
 
     return hexagons
 
-
+#this function creates the grid depending on the input of the user, it can create 5x5, 6x6, 7x7,8x8,9x9 or 10x10 sides grid size
+#it returns a list of hexagon objects with the hexagons used in this grid size game.
 def choose_grid(canvas, size_of_game, hexagons):
     openP = []
     if (size_of_game == "5x5"):
@@ -305,3 +309,4 @@ def choose_grid(canvas, size_of_game, hexagons):
     CornerLeftMiddle(canvas, hexagons[cLM].y + 20, hexagons[cLM].x - 33, "A-55")  # 5x5 : 64,   6x6: 45,  7x7: 28,  8x8:15,   9x9:  6,  10x10: 1
     CornerLeftBottom(canvas, hexagons[cLB].y - 19, hexagons[cLB].x - 10, "A-55")  # 5x5 : 179,  6x6: 186, 7x7: 194, 8x8:71,   9x9:  72, 10x10: 54
     CornerRightBottom(canvas, hexagons[cRB].y + 57, hexagons[cRB].x - 10, "A-55")  # 5x5 : 183,  6x6: 191, 7x7: 200, 8x8:208,  9x9:  217,10x10: 225
+    return openP

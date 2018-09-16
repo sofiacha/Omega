@@ -1,7 +1,8 @@
 from Tkinter import *
 from math import *
-# import sys
-import ctypes  # An included library with Python install.
+# ----------------------------------------------------------------------------------------------
+# those are used to create the dialog box for the user to tell what grid size wants for the game
+import ctypes
 from ctypes.wintypes import HWND, LPWSTR, UINT
 
 _user32 = ctypes.WinDLL('user32', use_last_error=True)
@@ -30,9 +31,9 @@ class Frame:
         self.kind = kind
         self.selected = False
     def draw(self):
-        FillHexagon(self.parent, self.x, self.y, self.size, self.color)
+        Hexagon(self.parent, self.x, self.y, self.size, self.color)
  # ------------------------------------------------------------------------------
-class FillHexagon:
+class Hexagon:
     def __init__(self, parent, x, y, length, color, tags):
         self.parent = parent  # canvas
         self.x = x  # top left x
@@ -42,6 +43,7 @@ class FillHexagon:
         self.selected = False
         self.tags = tags
         self.draw()
+        
     def draw(self):
         start_x = self.x
         start_y = self.y
@@ -69,14 +71,20 @@ class FillHexagon:
                                    outline="#ffffff",
                                    tags=self.tags)
 #--------------------------------------------------------------------------------------------------------#
-class MyDialog:
+class GridSizeDialog:
     def __init__(self, parent):
         top = self.top = Toplevel(parent)
-        self.top.geometry("%dx%d%+d%+d" % (400, 125, -50, 25))
-        Label(top, text="Please insert the number of players and the size of the game\n").pack()
+        self.top.geometry("%dx%d%+d%+d" % (400, 155, -50, 25))
+        Label(top, text="Please choose the size of the game and the colour you are going to be: \n").pack()
+
         self.variable = StringVar(top)
         self.variable.set("5x5")  # default value
-        w2 = OptionMenu(top, self.variable, "6x6", "7x7", "8x8", "9x9", "10x10")  # , command=self.ok)
+        w = OptionMenu(top, self.variable, "6x6", "7x7", "8x8", "9x9", "10x10")  # , command=self.ok)
+        w.pack(padx=15)
+
+        self.variable2 = StringVar(top)
+        self.variable2.set("White")  # default value
+        w2 = OptionMenu(top, self.variable2, "White", "Black")  # , command=self.ok)
         w2.pack(padx=15)
 
         button = Button(top, text="OK", command=self.ok)
@@ -85,7 +93,18 @@ class MyDialog:
     def ok(self):
         #print "value is", self.variable.get()
         self.top.destroy()
+#--------------------------------------------------------------------------------------------------------#
+class GameOver:
+    def __init__(self, parent):
+        top = self.top = Toplevel(parent)
+        self.top.geometry("%dx%d%+d%+d" % (200, 85, -850, 250))
+        Label(top, text="GAME OVER!").pack()
+        button = Button(top, text="OK", command=self.ok)
+        button.pack(pady=15)
 
+    def ok(self):
+        #print "value is", self.variable.get()
+        self.top.destroy()
 
 #-------------------------------------------------------------------------------
 class BlackCircle:
@@ -134,9 +153,8 @@ class WhiteCircle:
                                 outline="#ffffff",
                                 tags=self.tags)
 
-
+# -----------------------------------------------------------------------------------------------------------------------------------
 # Corners classes
-
 class CornerLeft:
     def __init__(self, parent, x, y ,tags):
         self.parent = parent  # canvas
@@ -157,8 +175,6 @@ class CornerLeft:
               (x + 50 - cos_tr - cos_tr - cos_tr - cos_tr- cos_tr/2, y + 11 + sin_tr - sin_tr + sin_tr + 22 + sin_tr - sin_tr/2), #x7
               (x + 50 - cos_tr - cos_tr - cos_tr - cos_tr- cos_tr/2 + sin(30 * pi / 180) * 55, y + 11 + sin_tr - sin_tr + sin_tr + 22 + sin_tr - sin_tr / 2- cos(30 * pi / 180) * 55)] #x8
         self.parent.create_polygon(xy,  fill="#fff", outline="#ffffff", tags = self.tags)
-
-
 
 class CornerRight:
     def __init__(self, parent, x, y ,tags):
@@ -181,7 +197,6 @@ class CornerRight:
               (x + cos_tr + cos_tr + cos_tr + cos_tr+ cos_tr/2 -sin(30 * pi / 180) * 55, y + 11 + sin_tr - sin_tr + sin_tr + 22 + sin_tr - sin_tr / 2- cos(30 * pi / 180) * 55)] #x9
         self.parent.create_polygon(xy,  fill="#fff", outline="#ffffff", tags = self.tags)
 
-
 class CornerRightMiddle:
     def __init__(self, parent, x, y ,tags):
         self.parent = parent  # canvas
@@ -200,7 +215,6 @@ class CornerRightMiddle:
               (x + cos_tr- cos_tr, y+22 + sin_tr+22+ sin_tr+ 22),  #x6,
               (x + cos_tr- cos_tr +cos_tr/2, y + 22 + sin_tr +22 + sin_tr + 22 + sin_tr/2), #x7
               (x + cos_tr- cos_tr +cos_tr + sin(20 * pi / 180) * 55, y + 22 + sin_tr +22 + sin_tr + 22 + sin_tr-cos(20 * pi / 180) * 55)] #x8
-              #(x + cos_tr + cos_tr + cos_tr + cos_tr+ cos_tr/2 -sin(30 * pi / 180) * 55, y + 11 + sin_tr - sin_tr + sin_tr + 22 + sin_tr - sin_tr / 2- cos(30 * pi / 180) * 55)] #x9
         self.parent.create_polygon(xy,  fill="#fff", outline="#ffffff", tags = self.tags)
 
 class CornerLeftMiddle:
@@ -221,7 +235,6 @@ class CornerLeftMiddle:
               (x + cos_tr- cos_tr, y+22 + sin_tr+22+ sin_tr+ 22),  #x6,
               (x + cos_tr- cos_tr -cos_tr/2, y + 22 + sin_tr +22 + sin_tr + 22 + sin_tr/2), #x7
               (x + cos_tr- cos_tr -cos_tr - sin(20 * pi / 180) * 55, y + 22 + sin_tr +22 + sin_tr + 22 + sin_tr-cos(20 * pi / 180) * 55)] #x8
-              #(x + cos_tr + cos_tr + cos_tr + cos_tr+ cos_tr/2 -sin(30 * pi / 180) * 55, y + 11 + sin_tr - sin_tr + sin_tr + 22 + sin_tr - sin_tr / 2- cos(30 * pi / 180) * 55)] #x9
         self.parent.create_polygon(xy,  fill="#fff", outline="#ffffff", tags = self.tags)
 
 class CornerLeftBottom:
@@ -242,7 +255,6 @@ class CornerLeftBottom:
               (x + 4*cos_tr, y+22 + 2*sin_tr),  #x6,
               (x + 4*cos_tr, y+33 + 2*sin_tr), #x7
               (x + 4*cos_tr -55, y+33 + 2*sin_tr)] #x8
-              #(x + cos_tr + cos_tr + cos_tr + cos_tr+ cos_tr/2 -sin(30 * pi / 180) * 55, y + 11 + sin_tr - sin_tr + sin_tr + 22 + sin_tr - sin_tr / 2- cos(30 * pi / 180) * 55)] #x9
         self.parent.create_polygon(xy,  fill="#fff", outline="#ffffff", tags = self.tags)
 
 class CornerRightBottom:
@@ -263,5 +275,4 @@ class CornerRightBottom:
               (x - 4*cos_tr, y+22 + 2*sin_tr),  #x6,
               (x - 4*cos_tr, y+33 + 2*sin_tr), #x7
               (x - 4*cos_tr +55, y+33 + 2*sin_tr)] #x8
-              #(x + cos_tr + cos_tr + cos_tr + cos_tr+ cos_tr/2 -sin(30 * pi / 180) * 55, y + 11 + sin_tr - sin_tr + sin_tr + 22 + sin_tr - sin_tr / 2- cos(30 * pi / 180) * 55)] #x9
         self.parent.create_polygon(xy,  fill="#fff", outline="#ffffff", tags = self.tags)
