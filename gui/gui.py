@@ -20,64 +20,95 @@ class App(Tk):
     def click(self, evt):
         size = 22
         x, y = evt.x, evt.y
-        item = self.can.find_closest(x, y)[0]
-        tags = self.can.gettags(item)
-        print tags
+        b = False
+        # item = self.can.find_closest(x, y)[0]
+        # tags = self.can.gettags(item)
         for i in self.hexagons:
              if ((x < i.y+size and i.y-size/3<x )and (y<i.x+size and i.x-(size/2)<y)):
                 i.selected = True
                 if i in self.openP:
-                    if self.user_marker=="White" and self.counter%4==0 and len(self.openP)>=4:
-                        disc = WhiteCircle(self.can, i.y + size-3, i.x + size / 2, size/1.5 , "#fff", "{}.{}".format("W", i.tags.split(".")[1]))
+                    if self.user_marker=="White" and self.counter%4==0:
+                        disc = WhiteStone(self.can, i.y + size-3, i.x + size / 2, size/1.5 , "#fff", "{}.{}".format("W", i.tags.split(".")[1]))
                         self.counter += 1
+                        disc.neighbors = i.neighbors
+                        disc.white_neighbors = calc_white_neigh(self.whitepieces, i)
+                        disc.black_neighbors = calc_black_neigh(self.blackpieces, i)
+
                         self.whitepieces.append(disc)
                         self.openP.remove(i)
+
 
                     elif self.user_marker=="White" and self.counter%4==1:
-                        disc = BlackCircle(self.can, i.y + size - 3, i.x + size / 2, size / 1.5, "#000", "{}.{}".format("B", i.tags.split(".")[1]))
+                        disc = BlackStone(self.can, i.y + size - 3, i.x + size / 2, size / 1.5, "#000", "{}.{}".format("B", i.tags.split(".")[1]))
+                        disc.neighbors = i.neighbors
+                        disc.white_neighbors = calc_white_neigh(self.whitepieces, i)
+                        disc.black_neighbors = calc_black_neigh(self.blackpieces, i)
                         self.blackpieces.append(disc)
                         self.counter += 1
                         self.openP.remove(i)
 
                         j = randint(0, len(self.openP) - 1)
-                        disc = WhiteCircle(self.can, self.openP[j].y + size - 3, self.openP[j].x + size / 2, size / 1.5,"#fff", "{}.{}".format("W", self.openP[j].tags.split(".")[1]))
+                        disc = WhiteStone(self.can, self.openP[j].y + size - 3, self.openP[j].x + size / 2, size / 1.5,"#fff", "{}.{}".format("W", self.openP[j].tags.split(".")[1]))
                         self.counter += 1
+                        disc.neighbors = self.openP[j].neighbors
+                        disc.white_neighbors = calc_white_neigh(self.whitepieces, self.openP[j])
+                        disc.black_neighbors = calc_black_neigh(self.blackpieces, self.openP[j])
                         self.whitepieces.append(disc)
                         self.openP.remove(self.openP[j])
 
+                        # score(self.whitepieces, self.blackpieces)
+
                         j = randint(0, len(self.openP) - 1)
-                        disc = BlackCircle(self.can, self.openP[j].y + size - 3, self.openP[j].x + size / 2, size / 1.5, "#000", "{}.{}".format("B", self.openP[j].tags.split(".")[1]))
+                        disc = BlackStone(self.can, self.openP[j].y + size - 3, self.openP[j].x + size / 2, size / 1.5, "#000", "{}.{}".format("B", self.openP[j].tags.split(".")[1]))
                         self.counter += 1
+                        disc.neighbors = self.openP[j].neighbors
+                        disc.white_neighbors = calc_white_neigh(self.whitepieces, self.openP[j])
+                        disc.black_neighbors = calc_black_neigh(self.blackpieces, self.openP[j])
                         self.blackpieces.append(disc)
                         self.openP.remove(self.openP[j])
 
+                        if len(self.openP)<4:
+                            b = True
+
                     elif self.user_marker=="Black" and self.counter%4==2:
-                        disc = WhiteCircle(self.can, i.y + size - 3, i.x + size / 2, size / 1.5, "#fff", "{}.{}".format("W", i.tags.split(".")[1]))
+                        disc = WhiteStone(self.can, i.y + size - 3, i.x + size / 2, size / 1.5, "#fff", "{}.{}".format("W", i.tags.split(".")[1]))
                         self.counter += 1
+                        disc.neighbors = i.neighbors
+                        disc.white_neighbors = calc_white_neigh(self.whitepieces, i)
+                        disc.black_neighbors = calc_black_neigh(self.blackpieces, i)
                         self.whitepieces.append(disc)
                         self.openP.remove(i)
 
                     elif self.user_marker=="Black" and self.counter%4==3:
-                        disc = BlackCircle(self.can, i.y + size - 3, i.x + size / 2, size / 1.5, "#000", "{}.{}".format("B", i.tags.split(".")[1]))
+                        disc = BlackStone(self.can, i.y + size - 3, i.x + size / 2, size / 1.5, "#000", "{}.{}".format("B", i.tags.split(".")[1]))
                         self.counter += 1
+                        disc.neighbors = i.neighbors
+                        disc.white_neighbors = calc_white_neigh(self.whitepieces, i)
+                        disc.black_neighbors = calc_black_neigh(self.blackpieces, i)
                         self.blackpieces.append(disc)
                         self.openP.remove(i)
                         if len(self.openP)>=4:
                             j = randint(0, len(self.openP) - 1)
-                            disc = WhiteCircle(self.can, self.openP[j].y + size - 3, self.openP[j].x + size / 2, size / 1.5, "#fff", "{}.{}".format("W", self.openP[j].tags.split(".")[1]))
+                            disc = WhiteStone(self.can, self.openP[j].y + size - 3, self.openP[j].x + size / 2, size / 1.5, "#fff", "{}.{}".format("W", self.openP[j].tags.split(".")[1]))
                             self.counter += 1
+                            disc.neighbors = self.openP[j].neighbors
+                            disc.white_neighbors = calc_white_neigh(self.whitepieces, self.openP[j])
+                            disc.black_neighbors = calc_black_neigh(self.blackpieces, self.openP[j])
                             self.whitepieces.append(disc)
                             self.openP.remove(self.openP[j])
 
                             j = randint(0, len(self.openP) - 1)
-                            disc = BlackCircle(self.can, self.openP[j].y + size - 3, self.openP[j].x + size / 2, size / 1.5, "#000", "{}.{}".format("B", self.openP[j].tags.split(".")[1]))
+                            disc = BlackStone(self.can, self.openP[j].y + size - 3, self.openP[j].x + size / 2, size / 1.5, "#000", "{}.{}".format("B", self.openP[j].tags.split(".")[1]))
                             self.counter += 1
+                            disc.neighbors = self.openP[j].neighbors
+                            disc.white_neighbors = calc_white_neigh(self.whitepieces, self.openP[j])
+                            disc.black_neighbors = calc_black_neigh(self.blackpieces, self.openP[j])
                             self.blackpieces.append(disc)
                             self.openP.remove(self.openP[j])
                         else:
-                            print("game is over")
-                            GameOver(self)
-                    if len(self.openP)<4:
+                            b = True
+                    if b==True:
+                        # score(self.whitepieces, self.blackpieces)
                         GameOver(self)
                         print("game is over")
 
@@ -98,24 +129,41 @@ class App(Tk):
         # self.wait_window(d.top)
         # size_of_game = d.variable.get()
         # user_marker = d.variable2.get()
-        self.user_marker ="Black"
+
+        self.user_marker ="White"
+
         if self.user_marker=="White":
             computer_marker ="Black"
         else:
             computer_marker = "White"
+
         txt1 = "User Marker: " + self.user_marker + "\nComputer Marker: " + computer_marker
         self.can.create_text(100, 100, text=txt1)
 
         self.hexagons = init_grid(self.can,cols, rows, size, debug)
-        size_of_game = "5x5"
+        size_of_game = "10x10"
         self.openP = choose_grid(self.can, size_of_game,self.hexagons)
+
+        calculate_neighbors(self.openP, size)
+
         if computer_marker == "White":
             i = randint(0, len(self.openP)-1)
-            disc = WhiteCircle(self.can, self.openP[i].y + size - 3, self.openP[i].x + size / 2, size / 1.5, "#fff", "{}.{}".format("W", self.openP[i].tags.split(".")[1]))
+            disc = WhiteStone(self.can, self.openP[i].y + size - 3, self.openP[i].x + size / 2, size / 1.5, "#fff", "{}.{}".format("W", self.openP[i].tags.split(".")[1]))
             self.counter+=1
+            disc.neighbors = self.openP[i].neighbors
+            disc.white_neighbors = calc_white_neigh(self.whitepieces, self.openP[i])
+            disc.black_neighbors = calc_black_neigh(self.blackpieces, self.openP[i])
+            self.whitepieces.append(disc)
+            self.openP.remove(self.openP[i])
+
             i = randint(0, len(self.openP) - 1)
-            disc = BlackCircle(self.can, self.openP[i].y + size - 3, self.openP[i].x + size / 2, size / 1.5, "#000", "{}.{}".format("B", self.openP[i].tags.split(".")[1]))
+            disc = BlackStone(self.can, self.openP[i].y + size - 3, self.openP[i].x + size / 2, size / 1.5, "#000", "{}.{}".format("B", self.openP[i].tags.split(".")[1]))
             self.counter += 1
+            disc.neighbors = self.openP[i].neighbors
+            disc.white_neighbors = calc_white_neigh(self.whitepieces, self.openP[i])
+            disc.black_neighbors = calc_black_neigh(self.blackpieces, self.openP[i])
+            self.blackpieces.append(disc)
+            self.openP.remove(self.openP[i])
 
 
 

@@ -42,6 +42,7 @@ class Hexagon:
         self.color = color  # fill color
         self.selected = False
         self.tags = tags
+        self.neighbors = []
         self.draw()
         
     def draw(self):
@@ -107,7 +108,7 @@ class GameOver:
         self.top.destroy()
 
 #-------------------------------------------------------------------------------
-class BlackCircle:
+class BlackStone:
     score = 0
     def __init__(self, parent, x, y, r, color, tags):
         self.parent = parent  # canvas
@@ -119,8 +120,8 @@ class BlackCircle:
         self.tags = tags
         self.draw()
         self.neighbors = []
-        self.black_neighbors = []
         self.white_neighbors = []
+        self.black_neighbors = []
 
     def draw(self):
         x = self.x
@@ -130,7 +131,7 @@ class BlackCircle:
                                 outline="#000000",
                                 tags=self.tags)
 #-------------------------------------------------------------------------------
-class WhiteCircle:
+class WhiteStone:
     score = 0
     def __init__(self, parent, x, y, r, color, tags):
         self.parent = parent  # canvas
