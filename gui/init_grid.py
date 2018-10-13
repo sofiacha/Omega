@@ -1,5 +1,7 @@
 from classes import *
+from ai.Board import *
 from math import *
+from copy import copy
 
 #The hexagons and the main board are created
 #it returns a list of hexagons with all the hexagons on the board
@@ -245,6 +247,7 @@ def init_grid(canvas,cols, rows, size, debug):
 #it returns a list of hexagon objects with the hexagons used in this grid size game.
 def choose_grid(canvas, size_of_game, hexagons):
     openP = []
+
     if (size_of_game == "5x5"):
         cL = 115
         cR = 119
@@ -302,7 +305,7 @@ def choose_grid(canvas, size_of_game, hexagons):
         cLM = 1
         cLB = 54
         cRB = 225
-        openP = hexagons
+        openP = copy(hexagons)
     CornerLeft(canvas, hexagons[cL].y + 7, hexagons[cL].x - 22,"A-55")  # 5x5 : 115,   6x6: 106, 7x7: 98,  8x8:57,   9x9:  56, 10x10: 36
     CornerRight(canvas, hexagons[cR].y - 19, hexagons[cR].x - 22,"A-55")  # 5x5 : 119,   6x6: 111, 7x7: 104  8x8:96,   9x9:  89, 10x10: 81
     CornerRightMiddle(canvas, hexagons[cRM].y + 20, hexagons[cRM].x - 33, "A-55")  # 5x5 : 153,  6x6: 234, 7x7: 249, 8x8:260,  9x9:  267,10x10: 270
@@ -310,6 +313,16 @@ def choose_grid(canvas, size_of_game, hexagons):
     CornerLeftBottom(canvas, hexagons[cLB].y - 19, hexagons[cLB].x - 10, "A-55")  # 5x5 : 179,  6x6: 186, 7x7: 194, 8x8:71,   9x9:  72, 10x10: 54
     CornerRightBottom(canvas, hexagons[cRB].y + 57, hexagons[cRB].x - 10, "A-55")  # 5x5 : 183,  6x6: 191, 7x7: 200, 8x8:208,  9x9:  217,10x10: 225
     return openP
+
+def initBoard(openP):
+    n = Board(len(openP))
+    for i in openP:
+        neighbours = []
+        for j in i.neighbors:
+            neighbours.append(j.tags)
+        c = Cell(i.x, i.y, neighbours, i.occupied, i.tags)
+        n.listCells.append(c)
+    return n
 
 
 def calculate_neighbors(open_positions, size):
@@ -319,93 +332,78 @@ def calculate_neighbors(open_positions, size):
             if ((j.y < i.y + size -38 and i.y - size / 3 -38 < j.y) and (j.x < i.x + size  and i.x - (size / 2) < j.x)):
                 # print("neighbour right: ", i.tags)
                 j.neighbors.append(i)
+                # j.occupied.append('')
             if ((j.y < i.y + size +38 and i.y - size / 3 +38< j.y) and (j.x < i.x + size and i.x - (size / 2)  < j.x)):
                 # print("neighbor left: ", i.tags)
                 j.neighbors.append(i)
+                # j.occupied.append('')
             if ((j.y < i.y + size -20 and i.y - size / 3 -20< j.y) and (j.x < i.x + size +32.7 and i.x - (size / 2) +32.7 < j.x)):
                 # print("neighbor top right: ", i.tags)
                 j.neighbors.append(i)
+                # j.occupied.append('')
             if ((j.y < i.y + size +20 and i.y - size / 3 +20< j.y) and (j.x < i.x + size +33 and i.x - (size / 2) +33 < j.x)):
                 # print("neighbor top left: ", i.tags)
                 j.neighbors.append(i)
+                # j.occupied.append('')
             if ((j.y < i.y + size -20 and i.y - size / 3 -20< j.y) and (j.x < i.x + size -24 and i.x - (size / 2) -24 < j.x)):
                 # print("neighbor bottom right: ", i.tags)
                 j.neighbors.append(i)
+                # j.occupied.append('')
             if ((j.y < i.y + size +19 and i.y - size / 3 +19< j.y) and (j.x < i.x + size -33 and i.x - (size / 2) -33 < j.x)):
                 # print("neighbor bottom left: ", i.tags)
                 j.neighbors.append(i)
+                # j.occupied.append('')
     # print("---------------------------------------------------------------------------")
 
+def dfs(graphs, disc, BorW):
+    graph = {}
+    for i in graphs:
+        graph[BorW+i.tags.split(".")[1]]= set(i.occupied)
+    visited, stack = set(), [disc.tags]
+    if graph:
+        while stack:
+            vertex = stack.pop()
+            if vertex not in visited:
+                visited.add(vertex)
+                stack.extend(graph[vertex] - visited)
+    return visited
 
-def calc_white_neigh(whites, i):
-    white_neighbours = []
-    for item in i.neighbors:
-        for j in whites:
-            if j.tags.split(".")[1]==item.tags.split(".")[1]:
-                white_neighbours.append(j)
-    return white_neighbours
+def calc_neigh(whites, disc):
+    tag = disc.tags
+    for item in whites:
+        for j in range(len(item.neighbors)):
+            if item.neighbors[j].tags.split(".")[1]== disc.tags.split(".")[1]:
+                item.occupied.append(disc.tags)
+                for i in range(len(disc.neighbors)):
+                    if disc.neighbors[i].tags.split(".")[1] == item.tags.split(".")[1]:
+                        disc.occupied.append(item.tags)
 
+def evaluationf(stones, disc, openPosition, BorW):
+    group = []
+    calc_neigh(stones, disc)
+    for item in stones:
+        group.append(dfs(set(openPosition).union(set(stones)), item, BorW))
+    group.append(dfs(set(openPosition).union(set(stones)), disc, BorW))
+    t1 = set(frozenset(i) for i in group)
+    groups = [set(jj) for jj in t1]
+    return groups
 
-def calc_black_neigh(blacks, i):
-    black_neighbours = []
-    for item in i.neighbors:
-        for j in blacks:
-            if j.tags.split(".")[1] == item.tags.split(".")[1]:
-                black_neighbours.append(j)
-    return black_neighbours
+def score(blacks, whites):
+    black_sizes = [len(i) for i in blacks]
+    white_sizes = [len(i) for i in whites]
+    if len(black_sizes) >0:
+        scoreb=1
+        for i in black_sizes:
+            scoreb = scoreb * i
+    else:
+        scoreb = 0
 
+    if len(white_sizes) > 0:
+        scorew = 1
+        for i in white_sizes:
+            scorew = scorew * i
+    else:
+        scorew = 0
 
-###this is to be deleted :D
-
-# def groups(whites, group):
-#     if isinstance(whites, list):
-#         for i in whites:
-#             if i.neighbors:
-#                 group.extend(i.neighbors)
-#                 group.append(i)
-#                 groups(i.neighbors, group)
-#     else:
-#         if whites.neighbors:
-#             group.extend(whites.neighbors)
-#             group.append(whites)
-#             groups(whites.neighbors, group)
-#     print(group)
-#     return group
-#
-# def score(whites, blacks):
-#     white_score = []
-#     for i in range(len(whites)):
-#         for j in range(i+1,len(whites)):
-#             llist = []
-#             if whites[i] in  whites[j].neighbors:
-#                 llist.append(whites[i])
-#                 llist.append(whites[j])
-#                 for k in range(len(whites[j].neighbors)):
-#                     if whites[j].neighbors[k]!= whites[i]:
-#                         llist.append(whites[j].neighbors[k])
-#                 white_score.append(llist)
-#     wwscores = []
-#     flag = False
-#     for i in range(len(white_score)):
-#         for j in range(i+1, len(white_score)):
-#             lllist = []
-#             if set(white_score[i]) & (set(white_score[j])):
-#                 lllist = white_score[i] + white_score[j]
-#             for k in wwscores:
-#                 if set(lllist) & (set(k)):
-#                     k = k + lllist
-#                     flag = True
-#             if flag == False:
-#                 wwscores.append(lllist)
-#             else:
-#                 flag = False
-#     white_scores = [x for x in wwscores if x != []]
-#     print(white_scores)
-#
-#
-#     black_score = []
-#     # for i in range(len(blacks) - 1):
-#     #     if blacks[i].neighbors.intersection(blacks[i + 1].neighbors):
-#     #         black_score.append(blacks[i].neighbors.union(blacks[i + 1].neighbors))
-#     score = [white_score, black_score]
-#     return score
+    scores = [scorew, scoreb]
+    return scores

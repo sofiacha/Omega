@@ -43,6 +43,7 @@ class Hexagon:
         self.selected = False
         self.tags = tags
         self.neighbors = []
+        self.occupied = []
         self.draw()
         
     def draw(self):
@@ -120,6 +121,7 @@ class BlackStone:
         self.tags = tags
         self.draw()
         self.neighbors = []
+        self.occupied = []
         self.white_neighbors = []
         self.black_neighbors = []
 
@@ -137,11 +139,12 @@ class WhiteStone:
         self.parent = parent  # canvas
         self.x = x  # top left x
         self.y = y  # top left y
-        self.r = r  # top left y
+        self.r = r
         self.color = color  # fill color
         self.selected = True
         self.tags = tags
         self.draw()
+        self.occupied = []
         self.neighbors = []
         self.black_neighbors = []
         self.white_neighbors = []
