@@ -39,7 +39,7 @@ class App(Tk):
                         disc.neighbors = i.neighbors
                         disc.occupied = i.occupied
 
-                        self.whiteGroups = evaluationf(self.whitepieces, disc, self.openP, "W.")
+                        self.whiteGroups = groupsf(self.whitepieces, disc, self.openP, "W.")
                         self.scores = score(self.blackGroups, self.whiteGroups)
                         print(self.scores)
                         print("---------------------------------------------------------------")
@@ -58,7 +58,7 @@ class App(Tk):
                         disc.neighbors = i.neighbors
                         disc.occupied = i.occupied
 
-                        self.blackGroups = evaluationf(self.blackpieces, disc, self.openP, "B.")
+                        self.blackGroups = groupsf(self.blackpieces, disc, self.openP, "B.")
                         self.scores = score(self.blackGroups, self.whiteGroups)
                         print(self.scores)
                         print("--------------------------------------------------------------")
@@ -73,7 +73,7 @@ class App(Tk):
                         self.counter += 1
                         disc.neighbors = self.openP[j].neighbors
                         disc.occupied = self.openP[j].occupied
-                        self.whiteGroups = evaluationf(self.whitepieces, disc, self.openP, "W.")
+                        self.whiteGroups = groupsf(self.whitepieces, disc, self.openP, "W.")
                         self.scores = score(self.blackGroups, self.whiteGroups)
                         print(self.scores)
                         print("---------------------------------------------------------------")
@@ -81,8 +81,6 @@ class App(Tk):
                         self.can.itemconfig(tagOrId="text2", text=txt2)
                         self.whitepieces.append(disc)
                         self.openP.remove(self.openP[j])
-                        # print(self.whitepieces)
-                        # score(self.whitepieces, self.blackpieces)
 
                         j = randint(0, len(self.openP) - 1)
                         disc = BlackStone(self.can, self.openP[j].y + size - 3, self.openP[j].x + size / 2, size / 1.5, "#000", "{}.{}".format("B", self.openP[j].tags.split(".")[1]))
@@ -90,13 +88,12 @@ class App(Tk):
                         disc.neighbors = self.openP[j].neighbors
                         disc.occupied = self.openP[j].occupied
 
-                        self.blackGroups = evaluationf(self.blackpieces, disc, self.openP, "B.")
+                        self.blackGroups = groupsf(self.blackpieces, disc, self.openP, "B.")
                         self.scores = score(self.blackGroups, self.whiteGroups)
                         print(self.scores)
                         print("----------------------------------------------------------------")
                         txt2 = "Whites: " + str(self.scores[0]) + "\nBlacks: " + str(self.scores[1])
                         self.can.itemconfig(tagOrId="text2", text=txt2)
-
                         self.blackpieces.append(disc)
                         self.openP.remove(self.openP[j])
 
@@ -108,7 +105,7 @@ class App(Tk):
                         self.counter += 1
                         disc.neighbors = i.neighbors
                         disc.occupied = i.occupied
-                        self.whiteGroups = evaluationf(self.whitepieces, disc, self.openP, "W.")
+                        self.whiteGroups = groupsf(self.whitepieces, disc, self.openP, "W.")
                         self.scores = score(self.blackGroups, self.whiteGroups)
                         print(self.scores)
                         print("---------------------------------------------------------------")
@@ -122,8 +119,7 @@ class App(Tk):
                         self.counter += 1
                         disc.neighbors = i.neighbors
                         disc.occupied = i.occupied
-
-                        self.blackGroups = evaluationf(self.blackpieces, disc, self.openP, "B.")
+                        self.blackGroups = groupsf(self.blackpieces, disc, self.openP, "B.")
                         self.scores = score(self.blackGroups, self.whiteGroups)
                         print(self.scores)
                         print("----------------------------------------------------------------")
@@ -137,7 +133,7 @@ class App(Tk):
                             self.counter += 1
                             disc.neighbors = self.openP[j].neighbors
                             disc.occupied = self.openP[j].occupied
-                            self.whiteGroups = evaluationf(self.whitepieces, disc, self.openP, "W.")
+                            self.whiteGroups = groupsf(self.whitepieces, disc, self.openP, "W.")
                             self.scores = score(self.blackGroups, self.whiteGroups)
                             print(self.scores)
                             print("---------------------------------------------------------------")
@@ -151,22 +147,20 @@ class App(Tk):
                             self.counter += 1
                             disc.neighbors = self.openP[j].neighbors
                             disc.occupied = self.openP[j].occupied
-
-                            self.blackGroups = evaluationf(self.blackpieces, disc, self.openP, "B.")
+                            self.blackGroups = groupsf(self.blackpieces, disc, self.openP, "B.")
                             self.scores = score(self.blackGroups, self.whiteGroups)
                             print(self.scores)
                             print("----------------------------------------------------------------")
                             txt2 = "Whites: " + str(self.scores[0]) + "\nBlacks: " + str(self.scores[1])
                             self.can.itemconfig(tagOrId="text2", text=txt2)
-
                             self.blackpieces.append(disc)
                             self.openP.remove(self.openP[j])
+
                         else:
                             b = True
                     if b==True:
-                        # score(self.whitepieces, self.blackpieces)
-                        GameOver(self)
-                        print("game is over")
+                        GameOver(self,self.scores)
+                        print("game is over: W:",self.scores[0],"  B: ", self.scores[1])
 
         for i in self.hexagons:
             if i.selected:
@@ -181,6 +175,7 @@ class App(Tk):
                 i.selected = False
 
     def initGrid(self, cols, rows, size, debug):
+        #TODO uncomment before publish
         # d = GridSizeDialog(self)
         # self.wait_window(d.top)
         # size_of_game = d.variable.get()
@@ -200,7 +195,6 @@ class App(Tk):
         size_of_game = "5x5"
         self.openP = choose_grid(self.can, size_of_game,self.hexagons)
         calculate_neighbors(self.openP, size)
-        self.Board = initBoard(self.openP)
 
         if computer_marker == "White":
             i = randint(0, len(self.openP)-1)
@@ -208,7 +202,7 @@ class App(Tk):
             self.counter+=1
             disc.neighbors = self.openP[i].neighbors
             disc.occupied = self.openP[i].occupied
-            self.whiteGroups = evaluationf(self.whitepieces, disc, self.openP, "W.")
+            self.whiteGroups = groupsf(self.whitepieces, disc, self.openP, "W.")
             self.scores = score(self.blackGroups, self.whiteGroups)
             print(self.scores)
             print("---------------------------------------------------------------")
@@ -216,19 +210,26 @@ class App(Tk):
             self.can.create_text(100, 200, text=txt2, tags="text2")
             self.whitepieces.append(disc)
             self.openP.remove(self.openP[i])
+
             #TODO edw testarw ta panta tou board
+
+            # edw kanw init to board alla to kanw lan8asmena, auto einai mono gia testing, meta 8a prepei na to diagrapsw
+            self.Board = initBoard(self.openP, self.whitepieces, self.blackpieces, "W", self.user_marker)  #auto 8a ginetai ka8e fora prin thn kinhsh tou computer
+
             # Board.evaluate(self.Board, )
             cell = Cell(disc.x, disc.y, disc.neighbors,disc.occupied, disc.tags)
-            newBoard = Board.makeMove(self.Board, cell)
-            llll = newBoard.getMoves()
+
+            llll = self.Board.getMoves()
+            newBoard = Board.makeMove(self.Board, llll[0])
             self.Board.player = "B"
 
+            #########################################################################################################################
             i = randint(0, len(self.openP) - 1)
             disc = BlackStone(self.can, self.openP[i].y + size - 3, self.openP[i].x + size / 2, size / 1.5, "#000", "{}.{}".format("B", self.openP[i].tags.split(".")[1]))
             self.counter += 1
             disc.neighbors = self.openP[i].neighbors
             disc.occupied = self.openP[i].occupied
-            self.blackGroups = evaluationf(self.blackpieces, disc, self.openP, "B.")
+            self.blackGroups = groupsf(self.blackpieces, disc, self.openP, "B.")
             self.scores = score(self.blackGroups, self.whiteGroups)
             print(self.scores)
             print("---------------------------------------------------------------")

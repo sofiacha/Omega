@@ -97,10 +97,14 @@ class GridSizeDialog:
         self.top.destroy()
 #--------------------------------------------------------------------------------------------------------#
 class GameOver:
-    def __init__(self, parent):
+    def __init__(self, parent, scores):
         top = self.top = Toplevel(parent)
         self.top.geometry("%dx%d%+d%+d" % (200, 85, -850, 250))
-        Label(top, text="GAME OVER!").pack()
+        if scores[0]>scores[1]:
+            winner = "White"
+        else:
+            winner = "Black"
+        Label(top, text="GAME OVER!\n "+ winner+" Player won!").pack()
         button = Button(top, text="OK", command=self.ok)
         button.pack(pady=15)
 

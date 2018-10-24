@@ -1,3 +1,5 @@
+from Board import *
+
 def minimax(board, player, maxDepth, currentDepth):
     #check if we are done recursing
     if board.isGameOver() or currentDepth == maxDepth:
@@ -15,7 +17,7 @@ def minimax(board, player, maxDepth, currentDepth):
         newBoard = board.makeMove(move)
 
         #Recurse
-        currentScore, currentMove = minimax(newBoard, player, maxDepth, currentDepth+1)
+        currentScore, currentMove = minimax(newBoard, newBoard.player, maxDepth, currentDepth+1)
 
         #Update the best score
         if board.currentPlayer() == player:
@@ -30,7 +32,7 @@ def minimax(board, player, maxDepth, currentDepth):
     #Return the score and the best move
     return bestScore, bestMove
 
-def getBestMove(board, player, maxDepth):
+def getBestMove(board, player, maxDepth): #TODO to the very end auto 8a kaleis ka8e fora pou 8a dhmiourgeis antigrafo tou board
 
     #get the result of a minimax run and return the move
     score, move = minimax(board, player, maxDepth, 0)

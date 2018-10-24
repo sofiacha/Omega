@@ -314,7 +314,7 @@ def choose_grid(canvas, size_of_game, hexagons):
     CornerRightBottom(canvas, hexagons[cRB].y + 57, hexagons[cRB].x - 10, "A-55")  # 5x5 : 183,  6x6: 191, 7x7: 200, 8x8:208,  9x9:  217,10x10: 225
     return openP
 
-def initBoard(openP):
+def initBoard(openP, listWhites, listBlacks, player, user_marker):
     n = Board(len(openP))
     for i in openP:
         neighbours = []
@@ -322,6 +322,23 @@ def initBoard(openP):
             neighbours.append(j.tags)
         c = Cell(i.x, i.y, neighbours, i.occupied, i.tags)
         n.listCells.append(c)
+
+    for i in listWhites:
+        neighbours = []
+        for j in i.neighbors:
+            neighbours.append(j.tags)
+        c = Cell(i.x, i.y, neighbours, i.occupied, i.tags)
+        n.listWhites.append(c)
+
+    for i in listBlacks:
+        neighbours = []
+        for j in i.neighbors:
+            neighbours.append(j.tags)
+        c = Cell(i.x, i.y, neighbours, i.occupied, i.tags)
+        n.listBlacks.append(c)
+
+    n.player = player
+    n.user_marker = user_marker
     return n
 
 
@@ -378,7 +395,7 @@ def calc_neigh(whites, disc):
                     if disc.neighbors[i].tags.split(".")[1] == item.tags.split(".")[1]:
                         disc.occupied.append(item.tags)
 
-def evaluationf(stones, disc, openPosition, BorW):
+def groupsf(stones, disc, openPosition, BorW):
     group = []
     calc_neigh(stones, disc)
     for item in stones:
