@@ -247,7 +247,6 @@ def init_grid(canvas,cols, rows, size, debug):
 #it returns a list of hexagon objects with the hexagons used in this grid size game.
 def choose_grid(canvas, size_of_game, hexagons):
     openP = []
-
     if (size_of_game == "5x5"):
         cL = 115
         cR = 119
@@ -343,34 +342,20 @@ def initBoard(openP, listWhites, listBlacks, player, user_marker):
 
 
 def calculate_neighbors(open_positions, size):
-    # neighbrs = []
     for j in open_positions:
         for i in open_positions:
             if ((j.y < i.y + size -38 and i.y - size / 3 -38 < j.y) and (j.x < i.x + size  and i.x - (size / 2) < j.x)):
-                # print("neighbour right: ", i.tags)
                 j.neighbors.append(i)
-                # j.occupied.append('')
             if ((j.y < i.y + size +38 and i.y - size / 3 +38< j.y) and (j.x < i.x + size and i.x - (size / 2)  < j.x)):
-                # print("neighbor left: ", i.tags)
                 j.neighbors.append(i)
-                # j.occupied.append('')
             if ((j.y < i.y + size -20 and i.y - size / 3 -20< j.y) and (j.x < i.x + size +32.7 and i.x - (size / 2) +32.7 < j.x)):
-                # print("neighbor top right: ", i.tags)
                 j.neighbors.append(i)
-                # j.occupied.append('')
             if ((j.y < i.y + size +20 and i.y - size / 3 +20< j.y) and (j.x < i.x + size +33 and i.x - (size / 2) +33 < j.x)):
-                # print("neighbor top left: ", i.tags)
                 j.neighbors.append(i)
-                # j.occupied.append('')
             if ((j.y < i.y + size -20 and i.y - size / 3 -20< j.y) and (j.x < i.x + size -24 and i.x - (size / 2) -24 < j.x)):
-                # print("neighbor bottom right: ", i.tags)
                 j.neighbors.append(i)
-                # j.occupied.append('')
             if ((j.y < i.y + size +19 and i.y - size / 3 +19< j.y) and (j.x < i.x + size -33 and i.x - (size / 2) -33 < j.x)):
-                # print("neighbor bottom left: ", i.tags)
                 j.neighbors.append(i)
-                # j.occupied.append('')
-    # print("---------------------------------------------------------------------------")
 
 def dfs(graphs, disc, BorW):
     graph = {}
@@ -424,3 +409,13 @@ def score(blacks, whites):
 
     scores = [scorew, scoreb]
     return scores
+
+
+def findxy(openP, best_move):
+    for i in openP:
+        if i.tags.split(".")[1] == best_move[0].tags.split(".")[1]:
+            hexW=i
+        if i.tags.split(".")[1] == best_move[1].tags.split(".")[1]:
+            hexB=i
+    return hexW,hexB
+

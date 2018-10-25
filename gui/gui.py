@@ -1,8 +1,8 @@
 from classes import *
-from init_grid import *
-from ai.Board import *
+from init_tools import *
+from ai.minimax import *
 from random import randint
-#TODO clean code from without reason prints and comments and make it have full functionality
+#TODO make it have full functionality
 # ---------------------------------------------------------
 class App(Tk):
     def __init__(self):
@@ -27,8 +27,6 @@ class App(Tk):
         size = 22
         x, y = evt.x, evt.y
         b = False
-        # item = self.can.find_closest(x, y)[0]
-        # tags = self.can.gettags(item)
         for i in self.hexagons:
              if ((x < i.y+size and i.y-size/3<x )and (y<i.x+size and i.x-(size/2)<y)):
                 i.selected = True
@@ -68,11 +66,18 @@ class App(Tk):
                         self.counter += 1
                         self.openP.remove(i)
 
-                        j = randint(0, len(self.openP) - 1)
-                        disc = WhiteStone(self.can, self.openP[j].y + size - 3, self.openP[j].x + size / 2, size / 1.5,"#fff", "{}.{}".format("W", self.openP[j].tags.split(".")[1]))
+                        # AI -----------------------------------------------------------------------------------------------------#
+                        self.Board = initBoard(self.openP, self.whitepieces, self.blackpieces, "B",
+                                               self.user_marker)  # auto 8a ginetai ka8e fora prin thn kinhsh tou computer
+                        best_move = getBestMove(self.Board, "B", 1)
+                        print(best_move[0].tags +"   "+best_move[1].tags)
+                        #Best positions ------------------------------------------------------------------------------------------#
+                        hexW, hexB = findxy(self.openP, best_move)
+                        #Apply best positions ------------------------------------------------------------------------------------#
+                        disc = WhiteStone(self.can, hexW.y + size - 3, hexW.x + size / 2, size / 1.5,"#fff", "{}.{}".format("W", hexW.tags.split(".")[1]))
                         self.counter += 1
-                        disc.neighbors = self.openP[j].neighbors
-                        disc.occupied = self.openP[j].occupied
+                        disc.neighbors = hexW.neighbors
+                        disc.occupied = hexW.occupied
                         self.whiteGroups = groupsf(self.whitepieces, disc, self.openP, "W.")
                         self.scores = score(self.blackGroups, self.whiteGroups)
                         print(self.scores)
@@ -80,14 +85,12 @@ class App(Tk):
                         txt2 = "Whites: " + str(self.scores[0]) + "\nBlacks: " + str(self.scores[1])
                         self.can.itemconfig(tagOrId="text2", text=txt2)
                         self.whitepieces.append(disc)
-                        self.openP.remove(self.openP[j])
+                        self.openP.remove(hexW)
 
-                        j = randint(0, len(self.openP) - 1)
-                        disc = BlackStone(self.can, self.openP[j].y + size - 3, self.openP[j].x + size / 2, size / 1.5, "#000", "{}.{}".format("B", self.openP[j].tags.split(".")[1]))
+                        disc = BlackStone(self.can, hexB.y + size - 3, hexB.x + size / 2, size / 1.5, "#000", "{}.{}".format("B", hexB.tags.split(".")[1]))
                         self.counter += 1
-                        disc.neighbors = self.openP[j].neighbors
-                        disc.occupied = self.openP[j].occupied
-
+                        disc.neighbors = hexB.neighbors
+                        disc.occupied = hexB.occupied
                         self.blackGroups = groupsf(self.blackpieces, disc, self.openP, "B.")
                         self.scores = score(self.blackGroups, self.whiteGroups)
                         print(self.scores)
@@ -95,7 +98,7 @@ class App(Tk):
                         txt2 = "Whites: " + str(self.scores[0]) + "\nBlacks: " + str(self.scores[1])
                         self.can.itemconfig(tagOrId="text2", text=txt2)
                         self.blackpieces.append(disc)
-                        self.openP.remove(self.openP[j])
+                        self.openP.remove(hexB)
 
                         if len(self.openP)<4:
                             b = True
@@ -128,11 +131,20 @@ class App(Tk):
                         self.blackpieces.append(disc)
                         self.openP.remove(i)
                         if len(self.openP)>=4:
-                            j = randint(0, len(self.openP) - 1)
-                            disc = WhiteStone(self.can, self.openP[j].y + size - 3, self.openP[j].x + size / 2, size / 1.5, "#fff", "{}.{}".format("W", self.openP[j].tags.split(".")[1]))
+
+                            # AI -----------------------------------------------------------------------------------------------------#
+                            self.Board = initBoard(self.openP, self.whitepieces, self.blackpieces, "W",
+                                                   self.user_marker)  # auto 8a ginetai ka8e fora prin thn kinhsh tou computer
+                            best_move = getBestMove(self.Board, "W", 1)
+                            print(best_move[0].tags + "   " + best_move[1].tags)
+                            # Best positions ------------------------------------------------------------------------------------------#
+                            hexW, hexB = findxy(self.openP, best_move)
+
+                            # Apply best positions ------------------------------------------------------------------------------------#
+                            disc = WhiteStone(self.can, hexW.y + size - 3, hexW.x + size / 2, size / 1.5, "#fff", "{}.{}".format("W", hexW.tags.split(".")[1]))
                             self.counter += 1
-                            disc.neighbors = self.openP[j].neighbors
-                            disc.occupied = self.openP[j].occupied
+                            disc.neighbors = hexW.neighbors
+                            disc.occupied = hexW.occupied
                             self.whiteGroups = groupsf(self.whitepieces, disc, self.openP, "W.")
                             self.scores = score(self.blackGroups, self.whiteGroups)
                             print(self.scores)
@@ -140,13 +152,12 @@ class App(Tk):
                             txt2 = "Whites: " + str(self.scores[0]) + "\nBlacks: " + str(self.scores[1])
                             self.can.itemconfig(tagOrId="text2", text=txt2)
                             self.whitepieces.append(disc)
-                            self.openP.remove(self.openP[j])
+                            self.openP.remove(hexW)
 
-                            j = randint(0, len(self.openP) - 1)
-                            disc = BlackStone(self.can, self.openP[j].y + size - 3, self.openP[j].x + size / 2, size / 1.5, "#000", "{}.{}".format("B", self.openP[j].tags.split(".")[1]))
+                            disc = BlackStone(self.can, hexB.y + size - 3, hexB.x + size / 2, size / 1.5, "#000", "{}.{}".format("B", hexB.tags.split(".")[1]))
                             self.counter += 1
-                            disc.neighbors = self.openP[j].neighbors
-                            disc.occupied = self.openP[j].occupied
+                            disc.neighbors = hexB.neighbors
+                            disc.occupied = hexB.occupied
                             self.blackGroups = groupsf(self.blackpieces, disc, self.openP, "B.")
                             self.scores = score(self.blackGroups, self.whiteGroups)
                             print(self.scores)
@@ -154,7 +165,7 @@ class App(Tk):
                             txt2 = "Whites: " + str(self.scores[0]) + "\nBlacks: " + str(self.scores[1])
                             self.can.itemconfig(tagOrId="text2", text=txt2)
                             self.blackpieces.append(disc)
-                            self.openP.remove(self.openP[j])
+                            self.openP.remove(hexB)
 
                         else:
                             b = True
@@ -211,19 +222,6 @@ class App(Tk):
             self.whitepieces.append(disc)
             self.openP.remove(self.openP[i])
 
-            #TODO edw testarw ta panta tou board
-
-            # edw kanw init to board alla to kanw lan8asmena, auto einai mono gia testing, meta 8a prepei na to diagrapsw
-            self.Board = initBoard(self.openP, self.whitepieces, self.blackpieces, "W", self.user_marker)  #auto 8a ginetai ka8e fora prin thn kinhsh tou computer
-
-            # Board.evaluate(self.Board, )
-            cell = Cell(disc.x, disc.y, disc.neighbors,disc.occupied, disc.tags)
-
-            llll = self.Board.getMoves()
-            newBoard = Board.makeMove(self.Board, llll[0])
-            self.Board.player = "B"
-
-            #########################################################################################################################
             i = randint(0, len(self.openP) - 1)
             disc = BlackStone(self.can, self.openP[i].y + size - 3, self.openP[i].x + size / 2, size / 1.5, "#000", "{}.{}".format("B", self.openP[i].tags.split(".")[1]))
             self.counter += 1
@@ -237,8 +235,6 @@ class App(Tk):
             self.can.itemconfig(tagOrId="text2", text=txt2)
             self.blackpieces.append(disc)
             self.openP.remove(self.openP[i])
-
-
 
 # ----------------------------------------------------------
 if __name__ == '__main__':

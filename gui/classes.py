@@ -32,7 +32,7 @@ class Frame:
         self.selected = False
     def draw(self):
         Hexagon(self.parent, self.x, self.y, self.size, self.color)
- # ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 class Hexagon:
     def __init__(self, parent, x, y, length, color, tags):
         self.parent = parent  # canvas
@@ -72,7 +72,7 @@ class Hexagon:
                                    fill=self.color,
                                    outline="#ffffff",
                                    tags=self.tags)
-#--------------------------------------------------------------------------------------------------------#
+# --------------------------------------------------------------------------------------------------------#
 class GridSizeDialog:
     def __init__(self, parent):
         top = self.top = Toplevel(parent)
@@ -81,19 +81,18 @@ class GridSizeDialog:
 
         self.variable = StringVar(top)
         self.variable.set("5x5")  # default value
-        w = OptionMenu(top, self.variable, "6x6", "7x7", "8x8", "9x9", "10x10")  # , command=self.ok)
+        w = OptionMenu(top, self.variable, "6x6", "7x7", "8x8", "9x9", "10x10")
         w.pack(padx=15)
 
         self.variable2 = StringVar(top)
         self.variable2.set("White")  # default value
-        w2 = OptionMenu(top, self.variable2, "White", "Black")  # , command=self.ok)
+        w2 = OptionMenu(top, self.variable2, "White", "Black")
         w2.pack(padx=15)
 
         button = Button(top, text="OK", command=self.ok)
         button.pack(pady=15)
 
     def ok(self):
-        #print "value is", self.variable.get()
         self.top.destroy()
 #--------------------------------------------------------------------------------------------------------#
 class GameOver:
@@ -109,7 +108,6 @@ class GameOver:
         button.pack(pady=15)
 
     def ok(self):
-        #print "value is", self.variable.get()
         self.top.destroy()
 
 #-------------------------------------------------------------------------------
