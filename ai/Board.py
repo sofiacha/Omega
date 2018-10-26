@@ -48,7 +48,7 @@ class Board:
         return newBoard
 
     # static evaluation function: returns the score for the current position from the point of view of the given player
-    def evaluate(self,player):  # TODO auto 8elei akoma douleia, 8elei na baleis evaluate() xwris to player gia na pai3ei sto negamax
+    def evaluate(self,player):
         score = self.score
         if not score:
             score.append(len(self.listWhites))
@@ -62,7 +62,7 @@ class Board:
         f = 5*x-1*y
         return f
 
-    def evaluateNM(self):
+    def evaluateNM(self): # TODO 8elei na baleis evaluate() xwris to player gia na pai3ei sto negamax
         score = self.score
         f = 5 * score[0] - 1 * score[1]
         return f

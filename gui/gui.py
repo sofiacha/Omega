@@ -2,7 +2,6 @@ from classes import *
 from init_tools import *
 from ai.minimax import *
 from random import randint
-#TODO make it have full functionality
 # ---------------------------------------------------------
 class App(Tk):
     def __init__(self):
