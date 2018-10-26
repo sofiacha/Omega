@@ -1,6 +1,8 @@
 from classes import *
 from init_tools import *
-from ai.minimax import *
+from ai.abNegamax import *
+# from ai.minimax import *
+# from ai.negamax import *
 from random import randint
 # ---------------------------------------------------------
 class App(Tk):
@@ -66,9 +68,12 @@ class App(Tk):
                         self.openP.remove(i)
 
                         # AI -----------------------------------------------------------------------------------------------------#
-                        self.Board = initBoard(self.openP, self.whitepieces, self.blackpieces, "W",
+                        self.Board = initBoard(self.openP, self.whitepieces, self.blackpieces, "B",
                                                self.user_marker)  # auto 8a ginetai ka8e fora prin thn kinhsh tou computer
-                        best_move = getBestMove(self.Board, "W", 1)
+                        # best_move = getBestMove(self.Board, "W", 1)
+                        # print(best_move[0].tags +"   "+best_move[1].tags)
+                        # best_move = getBestMoveNM(self.Board, 1)
+                        best_move = getBestMoveAB(self.Board, 1)
                         print(best_move[0].tags +"   "+best_move[1].tags)
                         #Best positions ------------------------------------------------------------------------------------------#
                         hexW, hexB = findxy(self.openP, best_move)
@@ -132,9 +137,11 @@ class App(Tk):
                         if len(self.openP)>=4:
 
                             # AI -----------------------------------------------------------------------------------------------------#
-                            self.Board = initBoard(self.openP, self.whitepieces, self.blackpieces, "B",
+                            self.Board = initBoard(self.openP, self.whitepieces, self.blackpieces, "W",
                                                    self.user_marker)  # auto 8a ginetai ka8e fora prin thn kinhsh tou computer
-                            best_move = getBestMove(self.Board, "B", 1)
+                            #best_move = getBestMove(self.Board, "B", 1)
+                            # best_move = getBestMoveNM(self.Board, 1)
+                            best_move = getBestMoveAB(self.Board, 1)
                             print(best_move[0].tags + "   " + best_move[1].tags)
                             # Best positions ------------------------------------------------------------------------------------------#
                             hexW, hexB = findxy(self.openP, best_move)

@@ -10,6 +10,9 @@ class Board:
         self.player = 'W'  # player is always B or W
         self.user_marker = ''
         self.score = []
+        self.previous_score = [0, 0]
+        self.groupW = []
+        self.groupB = []
 
     # Ta dika mou move einai ta cells
     # returns a list of move objects that correspond to the moves that can be made from the board position
@@ -29,9 +32,11 @@ class Board:
     def makeMove(self, move): #move needs to be of class Cell
         newBoard = copy.deepcopy(self)
         newBoard.size -=2
-        groupsB = groupsfAI(newBoard.listBlacks, move[1], newBoard.listCells, "B.")
-        groupsW = groupsfAI(newBoard.listWhites, move[0], newBoard.listCells, "W.")
-        newBoard.score = scorefAI(groupsB, groupsW)
+        newBoard.previous_score = copy.deepcopy(newBoard.score)
+        newBoard.groupB = groupsfAI(newBoard.listBlacks, move[1], newBoard.listCells, "B.")
+        newBoard.groupW = groupsfAI(newBoard.listWhites, move[0], newBoard.listCells, "W.")
+
+        newBoard.score = scorefAI(newBoard.groupB, newBoard.groupW)
         newBoard.listBlacks.append(move[1]) # black
         newBoard.listWhites.append(move[0]) # white
 
@@ -41,6 +46,8 @@ class Board:
             if i.tags.split('.')[1] == move[1].tags.split('.')[1]:
                 newBoard.listCells.remove(i)
 
+        # edw exei nohma na to energopoieis mono otan trexeis minimax 8arrw
+
         if newBoard.player == 'W':
             newBoard.player ='B'
         else:
@@ -48,7 +55,7 @@ class Board:
         return newBoard
 
     # static evaluation function: returns the score for the current position from the point of view of the given player
-    def evaluate(self,player):
+    def evaluate(self,player): # TODO 8elei pio e3upno tropo gia to f add 3 stones thingy, distance greater than 1 ok but if smaller don't put anything
         score = self.score
         if not score:
             score.append(len(self.listWhites))
@@ -62,11 +69,42 @@ class Board:
         f = 5*x-1*y
         return f
 
-    def evaluateNM(self): # TODO 8elei na baleis evaluate() xwris to player gia na pai3ei sto negamax
+    def evaluateNM(self): # TODO 8elei pio e3upno tropo gia to f add 3 stones thingy, distance greater than 1 ok but if smaller don't put anything
         score = self.score
-        f = 5 * score[0] - 1 * score[1]
-        return f
+        previous_score = self.previous_score
+        if not score:
+            score.append(len(self.listWhites))
+            score.append(len(self.listBlacks))
 
+        if self.player == "W":
+            x = score[0]
+            y = score[1]
+            if not previous_score:
+                xx = 0
+                yy = 0
+            else:
+                xx = previous_score[0]
+                yy = previous_score[1]
+
+            c=0
+            for i in self.groupW:
+                if len(i) > 3:
+                    c+=1
+        else:
+            y = score[0]
+            x = score[1]
+            if not previous_score:
+                yy=0
+                xx=0
+            else:
+                yy = previous_score[0]
+                xx = previous_score[1]
+            c=0
+            for i in self.groupB:
+                if len(i) > 3:
+                    c+=1
+        f = 5 * (x-xx) - 1 * (y-yy) - c*2
+        return f
 
     # returns the player whose turn it is to play on the current board #allagh paikth mono sto makeMove kai edw aplh epistrofh paikth k o 8eos boh8os
     def currentPlayer(self):

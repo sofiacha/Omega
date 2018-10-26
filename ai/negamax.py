@@ -2,7 +2,7 @@ def negamax(board, maxDepth, currentDepth):
 
     # Check if we're done recursing
     if board.isGameOver() or currentDepth == maxDepth:
-        return board.evaluate(), None
+        return board.evaluateNM(), None
 
     # Otherwise bubble up values from below
     bestMove = None
