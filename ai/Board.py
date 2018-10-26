@@ -28,14 +28,10 @@ class Board:
     # takes one move instance and return a completely new board object that represents the position after the move is made
     def makeMove(self, move): #move needs to be of class Cell
         newBoard = copy.deepcopy(self)
-
         newBoard.size -=2
-
         groupsB = groupsfAI(newBoard.listBlacks, move[1], newBoard.listCells, "B.")
         groupsW = groupsfAI(newBoard.listWhites, move[0], newBoard.listCells, "W.")
-
         newBoard.score = scorefAI(groupsB, groupsW)
-        # print(newBoard.score)
         newBoard.listBlacks.append(move[1]) # black
         newBoard.listWhites.append(move[0]) # white
 
@@ -49,11 +45,10 @@ class Board:
             newBoard.player ='B'
         else:
             newBoard.player = 'W'
-
         return newBoard
 
     # static evaluation function: returns the score for the current position from the point of view of the given player
-    def evaluate(self,player):
+    def evaluate(self,player):  # TODO auto 8elei akoma douleia, 8elei na baleis evaluate() xwris to player gia na pai3ei sto negamax
         score = self.score
         if not score:
             score.append(len(self.listWhites))
@@ -64,9 +59,14 @@ class Board:
         else:
             y = score[0]
             x = score[1]
-        f = 5*x+1/y
-        # print(f)
+        f = 5*x-1*y
         return f
+
+    def evaluateNM(self):
+        score = self.score
+        f = 5 * score[0] - 1 * score[1]
+        return f
+
 
     # returns the player whose turn it is to play on the current board #allagh paikth mono sto makeMove kai edw aplh epistrofh paikth k o 8eos boh8os
     def currentPlayer(self):
@@ -74,7 +74,7 @@ class Board:
 
     # returns true if the position of the board is terminal
     def isGameOver(self): # edw mallon dn exei nohma na to exeis etsi prepei na tsekareis otan einai ston antistoixo paikth k pws 8a to pairnei auto
-        if (self.user_marker=="White" and self.currentPlayer() == 'W' and  len(self.listCells)<=3) or (self.user_marker=="Black" and self.currentPlayer() == 'W' and  len(self.listCells)<=3):
+        if (self.user_marker=="Black" and self.currentPlayer() == 'W' and  len(self.listCells)<=3):
             return True
         else:
             return False

@@ -18,10 +18,10 @@ def minimax(board, player, maxDepth, currentDepth):
             if currentScore > bestScore:
                 bestScore = currentScore
                 bestMove = move
-            else:
-                if currentScore < bestScore:
-                    bestScore = currentScore
-                    bestMove = move
+        else:
+            if currentScore < bestScore:
+                bestScore = currentScore
+                bestMove = move
     #Return the score and the best move
     return bestScore, bestMove
 

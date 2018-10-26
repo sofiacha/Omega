@@ -67,9 +67,9 @@ class App(Tk):
                         self.openP.remove(i)
 
                         # AI -----------------------------------------------------------------------------------------------------#
-                        self.Board = initBoard(self.openP, self.whitepieces, self.blackpieces, "B",
+                        self.Board = initBoard(self.openP, self.whitepieces, self.blackpieces, "W",
                                                self.user_marker)  # auto 8a ginetai ka8e fora prin thn kinhsh tou computer
-                        best_move = getBestMove(self.Board, "B", 1)
+                        best_move = getBestMove(self.Board, "W", 1)
                         print(best_move[0].tags +"   "+best_move[1].tags)
                         #Best positions ------------------------------------------------------------------------------------------#
                         hexW, hexB = findxy(self.openP, best_move)
@@ -133,9 +133,9 @@ class App(Tk):
                         if len(self.openP)>=4:
 
                             # AI -----------------------------------------------------------------------------------------------------#
-                            self.Board = initBoard(self.openP, self.whitepieces, self.blackpieces, "W",
+                            self.Board = initBoard(self.openP, self.whitepieces, self.blackpieces, "B",
                                                    self.user_marker)  # auto 8a ginetai ka8e fora prin thn kinhsh tou computer
-                            best_move = getBestMove(self.Board, "W", 1)
+                            best_move = getBestMove(self.Board, "B", 1)
                             print(best_move[0].tags + "   " + best_move[1].tags)
                             # Best positions ------------------------------------------------------------------------------------------#
                             hexW, hexB = findxy(self.openP, best_move)
@@ -187,12 +187,12 @@ class App(Tk):
 
     def initGrid(self, cols, rows, size, debug):
         #TODO uncomment before publish
-        # d = GridSizeDialog(self)
-        # self.wait_window(d.top)
-        # size_of_game = d.variable.get()
-        # user_marker = d.variable2.get()
+        d = GridSizeDialog(self)
+        self.wait_window(d.top)
+        size_of_game = d.variable.get()
+        self.user_marker = d.variable2.get()
 
-        self.user_marker ="Black"
+        # self.user_marker ="White"
 
         if self.user_marker=="White":
             computer_marker ="Black"
