@@ -32,7 +32,7 @@ class Board:
     def makeMove(self, move): #move needs to be of class Cell
         newBoard = copy.deepcopy(self)
         newBoard.size -=2
-        newBoard.previous_score = copy.deepcopy(newBoard.score)
+        newBoard.previous_score = copy.deepcopy(self.score)
         newBoard.groupB = groupsfAI(newBoard.listBlacks, move[1], newBoard.listCells, "B.")
         newBoard.groupW = groupsfAI(newBoard.listWhites, move[0], newBoard.listCells, "W.")
 
@@ -55,44 +55,71 @@ class Board:
         return newBoard
 
     # static evaluation function: returns the score for the current position from the point of view of the given player
-    def evaluate(self,player): # TODO 8elei pio e3upno tropo gia to f add 3 stones thingy, distance greater than 1 ok but if smaller don't put anything
-        score = self.score
-        if not score:
-            score.append(len(self.listWhites))
-            score.append(len(self.listBlacks))
-        if self.player == "W":
-            x = score[0]
-            y = score[1]
-        else:
-            y = score[0]
-            x = score[1]
-        f = 5*x-1*y
-        return f
-
-    def evaluateNM(self): # TODO 8elei pio e3upno tropo gia to f add 3 stones thingy, distance greater than 1 ok but if smaller don't put anything
+    def evaluate(self,player):
         score = self.score
         previous_score = self.previous_score
+        c=0
         if not score:
             score.append(len(self.listWhites))
             score.append(len(self.listBlacks))
-
-        if self.player == "W":
+        if player == "B":
             x = score[0]
             y = score[1]
+            w1 = len(self.groupW)
+            w2 = len(self.groupB)
             if not previous_score:
                 xx = 0
                 yy = 0
             else:
                 xx = previous_score[0]
                 yy = previous_score[1]
-
-            c=0
+            for i in self.groupB:
+                if len(i) > 3:
+                    c += 1
+        else:
+            y = score[0]
+            x = score[1]
+            w1 = len(self.groupB)
+            w2 = len(self.groupW)
+            if not previous_score:
+                yy=0
+                xx=0
+            else:
+                yy = previous_score[0]
+                xx = previous_score[1]
             for i in self.groupW:
+                if len(i) > 3:
+                    c+=1
+        f = w1 * (x - xx) - w2 * (y - yy) + c * w2
+        return f
+
+    def evaluateNM(self):
+        score = self.score
+        previous_score = self.previous_score
+        c = 0
+        if not score:
+            score.append(len(self.listWhites))
+            score.append(len(self.listBlacks))
+
+        if self.player == "W":
+            x = score[0]
+            y = score[1]
+            w1 = len(self.groupW)
+            w2 = len(self.groupB)
+            if not previous_score:
+                xx = 0
+                yy = 0
+            else:
+                xx = previous_score[0]
+                yy = previous_score[1]
+            for i in self.groupB:
                 if len(i) > 3:
                     c+=1
         else:
             y = score[0]
             x = score[1]
+            w1 = len(self.groupB)
+            w2 = len(self.groupW)
             if not previous_score:
                 yy=0
                 xx=0
@@ -100,10 +127,10 @@ class Board:
                 yy = previous_score[0]
                 xx = previous_score[1]
             c=0
-            for i in self.groupB:
+            for i in self.groupW:
                 if len(i) > 3:
                     c+=1
-        f = 5 * (x-xx) - 1 * (y-yy) - c*2
+        f = w1 * (x-xx) - w2 * (y-yy) + c*w2
         return f
 
     # returns the player whose turn it is to play on the current board #allagh paikth mono sto makeMove kai edw aplh epistrofh paikth k o 8eos boh8os
@@ -146,6 +173,9 @@ def dfsAI(graphs, disc, BorW):
 def groupsfAI(stones, disc, openPosition, BorW): # stones2 = disc
     group = []
     update_neighborsAI(stones, disc)
+    for item in openPosition:
+        if disc.tags.split(".")[1] == item.tags.split(".")[1]:
+            item.occupied = disc.occupied
     for item in stones:
         group.append(dfsAI(set(openPosition).union(set(stones)), item, BorW))
     group.append(dfsAI(set(openPosition).union(set(stones)), disc, BorW))
