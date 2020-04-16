@@ -1,3 +1,3 @@
-# ISG
-ISG project 2018
+# OMEGA
+implementation of the omega game using python 
 pyinstaller gui.py
